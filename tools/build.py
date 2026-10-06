@@ -693,25 +693,6 @@ def build():
     for slug in ("robot", "medium"):
         bodies[slug] = bodies[slug].replace('<main class="article">', '<main class="article article--column">', 1)
 
-    # "next project" links at the bottom of the case studies
-    order = ["goodwill", "robot", "medium", "honda"]
-    label = {"goodwill": ("Workflow platform research", "業務プラットフォームのリサーチ"),
-             "robot": ("Home robot research", "家庭用ロボットのリサーチ"),
-             "medium": ("Empathy Propagation Design", "共感を広げるデザイン"),
-             "honda": ("EV adoption research", "EV普及のリサーチ")}
-    for i, slug in enumerate(order):
-        nxt = order[(i + 1) % len(order)]
-        ja = slug in ("goodwill", "honda")
-        all_txt = "← プロジェクト一覧" if ja else "← All projects"
-        label_txt = "次のプロジェクト" if ja else "Next project"
-        lang_attr = ' lang="ja"' if ja else ""
-        nav = (f'    <div class="block">\n      <nav class="project-nav"{lang_attr} aria-label="{"プロジェクト" if ja else "Projects"}">\n'
-               f'        <a class="project-nav__all" href="/projects/">{all_txt}</a>\n'
-               f'        <a class="project-nav__next" href="/{nxt}/" rel="next"><span class="project-nav__label">{label_txt}</span>'
-               f'<span class="project-nav__title">{label[nxt][1] if ja else label[nxt][0]}</span>'
-               f'<span class="project-nav__arrow" aria-hidden="true">→</span></a>\n      </nav>\n    </div>\n')
-        bodies[slug] = bodies[slug].replace("  </main>", nav + "  </main>", 1)
-
     meta_theme = {"index": ("dark", "home", "en"), "about": ("dark", "about", "en"), "projects": ("dark", "projects", "en"),
                   "goodwill": ("light", None, "ja"), "honda": ("light", None, "ja"), "robot": ("light", None, "en"),
                   "medium": ("light", None, "en"), "ai-process": ("light", None, "ja")}

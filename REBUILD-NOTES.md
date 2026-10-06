@@ -64,13 +64,13 @@ I also checked that the visible text and image descriptions on every page are id
 - Home: one column on phones, English shifted left, Japanese shifted right, photo below it at about two-thirds width and centered. About photos use the same width. About line spacing is tighter (1.5 English, 1.7 Japanese).
 - Japanese case studies: 17px text with 1.75 line spacing and 24px side margins on phones. I removed `text-wrap: pretty` from body text because Safari used it to shorten every line, which made the text look crammed to the left. (Safari also ignores `word-break: auto-phrase`, so Japanese there breaks between any two characters; Chrome and Edge break at phrase boundaries.)
 - The 余談 note is inset like the other footnotes. The Honda "***" footnote is a plain footnote (it was styled as a quote by mistake).
-- "Next project" / "All projects" are two bordered buttons on phones (the next project first, with a small label above its name).
+- The "Next project" / "All projects" links at the bottom of the case studies were added and then removed again at your request.
+- Japanese headings break between phrases in every browser, including Safari: `tools/phrases.py` adds `<wbr>` marks (using Google's BudouX) and the `.jp-phrases` CSS rule honors them. On phones the case-study column sits 8px further in than the header. Home on phones has a smaller English phrase, more left padding and more space between the English, Japanese and photo. The header has 48px above it on phones.
 
 ## Search setup
 
 - `sitemap.xml` and `robots.txt` list the 8 pages and point search engines at the sitemap. Both assume the site lives at `https://konomi.cc` (no "www"); if the address ever changes, update them and the `canonical` line in each page's `<head>`.
 - Each page has a `canonical` tag naming its official address, so `konomi.cc` and `www.konomi.cc` aren't counted as two copies. Still set up a redirect from `www.konomi.cc` to `konomi.cc` at your host.
-- The four case studies end with "All projects" and "Next project" links (Goodwill → Robot → Medium → Honda → back to Goodwill). They are hidden when printing.
 
 ## Page titles and descriptions
 

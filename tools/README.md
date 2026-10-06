@@ -10,6 +10,7 @@ Kept for the record, and in case the site ever needs to be regenerated.
 | `alt_text.py`, `alt_ja.py` | The English and Japanese alt text for every image. |
 | `meta_text.py` | Page titles and descriptions. |
 | `optimize.py` | Converts images to WebP and updates the references (needs the Pillow library). |
+| `phrases.py` | Run last: adds `<wbr>` phrase-break marks to Japanese headings (needs the `budoux` library). |
 | `og-image.jpg` | Master copy of the 1200×630 link-preview image. |
 
 Caveats: the scripts expect the original folder locations (`/Users/konomi/Documents/portfolio-site`) and a few
