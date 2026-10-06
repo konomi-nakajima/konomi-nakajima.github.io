@@ -58,6 +58,14 @@ I also checked that the visible text and image descriptions on every page are id
 - **Print stylesheet**: printing or "Save as PDF" gives white pages with black text, no navigation, and the address after each external link.
 - Project hashtags are smaller (15px) and thin (weight 200) with a larger gap above them.
 
+## Phone refinements (after checking on Safari)
+
+- Header: the name is 20px and the menu's overline sits close to its text, so the name and the menu have the same visual height; the name drops to 18px only below 360px wide.
+- Home: one column on phones, English shifted left, Japanese shifted right, photo below it at about two-thirds width and centered. About photos use the same width. About line spacing is tighter (1.5 English, 1.7 Japanese).
+- Japanese case studies: 17px text with 1.75 line spacing and 24px side margins on phones. I removed `text-wrap: pretty` from body text because Safari used it to shorten every line, which made the text look crammed to the left. (Safari also ignores `word-break: auto-phrase`, so Japanese there breaks between any two characters; Chrome and Edge break at phrase boundaries.)
+- The 余談 note is inset like the other footnotes. The Honda "***" footnote is a plain footnote (it was styled as a quote by mistake).
+- "Next project" / "All projects" are two bordered buttons on phones (the next project first, with a small label above its name).
+
 ## Search setup
 
 - `sitemap.xml` and `robots.txt` list the 8 pages and point search engines at the sitemap. Both assume the site lives at `https://konomi.cc` (no "www"); if the address ever changes, update them and the `canonical` line in each page's `<head>`.

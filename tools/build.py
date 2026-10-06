@@ -353,6 +353,9 @@ class Article:
             self.emit('<div class="prose">\n  ' + paragraphs(inline(n.children)).replace("\n", "\n  ") + "\n</div>")
         elif any(c in NOTE_CLASS for c in k):
             cls = next(NOTE_CLASS[c] for c in k if c in NOTE_CLASS)
+            # the original reused its "quote" style for one footnote on Honda; only real quotes keep the bar
+            if "quote" in cls and text_of(n).lstrip(ZWJ + " \n").startswith("*"):
+                cls = "note"
             self.emit(f'<p class="{cls}">{inline(n.children).replace(ZWJ, "")}</p>')
         elif t == "ul":
             numbered = "list-3" in k
@@ -700,10 +703,13 @@ def build():
         nxt = order[(i + 1) % len(order)]
         ja = slug in ("goodwill", "honda")
         all_txt = "← プロジェクト一覧" if ja else "← All projects"
-        next_txt = f"次のプロジェクト：{label[nxt][1]} →" if ja else f"Next project: {label[nxt][0]} →"
+        label_txt = "次のプロジェクト" if ja else "Next project"
         lang_attr = ' lang="ja"' if ja else ""
         nav = (f'    <div class="block">\n      <nav class="project-nav"{lang_attr} aria-label="{"プロジェクト" if ja else "Projects"}">\n'
-               f'        <a href="/projects/">{all_txt}</a>\n        <a href="/{nxt}/" rel="next">{next_txt}</a>\n      </nav>\n    </div>\n')
+               f'        <a class="project-nav__all" href="/projects/">{all_txt}</a>\n'
+               f'        <a class="project-nav__next" href="/{nxt}/" rel="next"><span class="project-nav__label">{label_txt}</span>'
+               f'<span class="project-nav__title">{label[nxt][1] if ja else label[nxt][0]}</span>'
+               f'<span class="project-nav__arrow" aria-hidden="true">→</span></a>\n      </nav>\n    </div>\n')
         bodies[slug] = bodies[slug].replace("  </main>", nav + "  </main>", 1)
 
     meta_theme = {"index": ("dark", "home", "en"), "about": ("dark", "about", "en"), "projects": ("dark", "projects", "en"),
