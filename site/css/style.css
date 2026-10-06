@@ -288,12 +288,6 @@ sup {
   /* pull the Japanese name closer to "Konomi" (the full-width ・ has wide side spacing) */
   .brand__sep { margin: 0 -0.4em; }
 
-  /* optical centring: nudged down so the menu (line + text) sits level with the name */
-  .site-nav {
-    position: relative;
-    top: 2px;
-  }
-
   /* Menu line sits close to its text, so the menu's height (line to baseline)
      matches the height of the name (cap height to baseline) */
   .site-nav a > span {
@@ -567,8 +561,8 @@ sup {
   }
 
   .photo {
-    width: 78%;               /* same width as the text columns => left edge halfway between theirs */
-    max-width: 26rem;
+    width: 84%;               /* same width as the Home photo */
+    max-width: 24rem;
     margin: 0 auto;
   }
 
@@ -582,6 +576,8 @@ sup {
 
   .about__col--jp .about__text {
     line-height: 1.6;
+    text-align: justify;            /* 両端揃え: left edge as before, right edge flush with the menu's */
+    text-justify: inter-character;
   }
 }
 

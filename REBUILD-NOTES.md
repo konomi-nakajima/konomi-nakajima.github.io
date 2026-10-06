@@ -91,6 +91,11 @@ I also checked that the visible text and image descriptions on every page are id
 - Home: the space between the English and Japanese phrases is one English line (about 95px) instead of two (124px).
 - Header: the menu is nudged 2px down (it was 1px), on request, so it sits about 1px below the name's measured centre.
 
+## Phone refinements, round 7
+
+- Header: the menu nudge was removed. By default the name's centre sits 1px lower than the menu's (the menu stays where it was originally).
+- About on phones: the Japanese text is justified (両端揃え), so its left edge is unchanged and every full line ends exactly at the menu's right edge. The photos are the same width as Home's (84%).
+
 ## Search setup
 
 - `sitemap.xml` and `robots.txt` list the 8 pages and point search engines at the sitemap. Both assume the site lives at `https://konomi.cc` (no "www"); if the address ever changes, update them and the `canonical` line in each page's `<head>`.
