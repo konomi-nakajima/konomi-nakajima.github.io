@@ -85,6 +85,12 @@ I also checked that the visible text and image descriptions on every page are id
 - Home: two English lines of extra space between the English and Japanese phrases; the space above the English still equals the space below the Japanese, and the photo starts at the same position.
 - About: the English has 24px of extra left padding (text starts 48px from the edge) and the Japanese 24px of right padding (its lines end about 48–53px from the right edge, depending on where each line breaks). The photos are unchanged at 78% wide, so their left edge is no longer exactly halfway between the two text edges.
 
+## Phone refinements, round 6
+
+- About: the extra side padding added in round 5 was removed again (English starts 24px from the edge).
+- Home: the space between the English and Japanese phrases is one English line (about 95px) instead of two (124px).
+- Header: the menu is nudged 2px down (it was 1px), on request, so it sits about 1px below the name's measured centre.
+
 ## Search setup
 
 - `sitemap.xml` and `robots.txt` list the 8 pages and point search engines at the sitemap. Both assume the site lives at `https://konomi.cc` (no "www"); if the address ever changes, update them and the `canonical` line in each page's `<head>`.

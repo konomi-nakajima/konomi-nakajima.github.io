@@ -288,10 +288,10 @@ sup {
   /* pull the Japanese name closer to "Konomi" (the full-width ・ has wide side spacing) */
   .brand__sep { margin: 0 -0.4em; }
 
-  /* optical centring: the menu (line + text) measured 1px higher than the name */
+  /* optical centring: nudged down so the menu (line + text) sits level with the name */
   .site-nav {
     position: relative;
-    top: 1px;
+    top: 2px;
   }
 
   /* Menu line sits close to its text, so the menu's height (line to baseline)
@@ -448,7 +448,7 @@ sup {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: calc(var(--space-2xl) + 2.6 * 1.375rem);   /* + two lines of the English phrase */
+    gap: calc(var(--space-2xl) + 1.3 * 1.375rem);   /* + one line of the English phrase */
     min-height: calc(100vh - 12rem);
     min-height: calc(100svh - 12rem);
   }
@@ -574,15 +574,6 @@ sup {
 
   .about__title {
     font-size: 1.375rem;
-  }
-
-  /* English gets left padding, Japanese gets right padding, the same amount (like Home) */
-  .about__col:not(.about__col--jp) {
-    padding-left: var(--space-m);
-  }
-
-  .about__col--jp {
-    padding-right: var(--space-m);
   }
 
   .about__text {
