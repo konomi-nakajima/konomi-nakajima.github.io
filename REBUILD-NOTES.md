@@ -74,6 +74,11 @@ I also checked that the visible text and image descriptions on every page are id
 - The Japanese case studies are left-aligned with the header again on phones (the 8px inset was removed).
 - The menu link for the page you're on is bold as well as having the thicker line (Inconsolata 400–700 is included in `fonts/`).
 
+## Phone refinements, round 4
+
+- Header on phones: the name is 22px (20px on 360–379px screens, 18px below that, so it never crowds the menu) and the gap around the ・ is tighter. About's page titles are 22px, the same size as the name.
+- Home on phones: the space above the English phrase equals the space below the Japanese phrase (164px in a 390×750 window), and the photo is 84% wide, so its left edge is halfway between its previous edge and the header's.
+
 ## Search setup
 
 - `sitemap.xml` and `robots.txt` list the 8 pages and point search engines at the sitemap. Both assume the site lives at `https://konomi.cc` (no "www"); if the address ever changes, update them and the `canonical` line in each page's `<head>`.

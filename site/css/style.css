@@ -283,7 +283,10 @@ sup {
 @media (max-width: 767px) {
   .site-header { margin-top: var(--space-xl); }
   .site-header__inner { align-items: baseline; }
-  .brand__name { font-size: 1.25rem; }
+  .brand__name { font-size: 1.375rem; }
+
+  /* pull the Japanese name closer to "Konomi" (the full-width ・ has wide side spacing) */
+  .brand__sep { margin: 0 -0.4em; }
 
   /* Menu line sits close to its text, so the menu's height (line to baseline)
      matches the height of the name (cap height to baseline) */
@@ -297,6 +300,11 @@ sup {
   .site-header { margin-top: var(--space-xl); }
   .site-nav { margin-right: calc(-1 * var(--space-xs)); }
   .site-nav a { padding: 0 var(--space-xs); }
+}
+
+/* narrower phones: a slightly smaller name so it never crowds the menu */
+@media (max-width: 379px) {
+  .brand__name { font-size: 1.25rem; }
 }
 
 @media (max-width: 359px) {
@@ -418,7 +426,7 @@ sup {
 
 @media (max-width: 767px) {
   .home {
-    margin-top: var(--space-2xl);
+    margin-top: 0;      /* the phrase block supplies the space, so above-English equals below-Japanese */
   }
 
   /* One column: English shifted left, Japanese shifted right, then the photo. The phrases
@@ -435,8 +443,8 @@ sup {
     flex-direction: column;
     justify-content: center;
     gap: var(--space-2xl);
-    min-height: calc(100vh - 16rem);
-    min-height: calc(100svh - 16rem);
+    min-height: calc(100vh - 12rem);
+    min-height: calc(100svh - 12rem);
   }
 
   .home__title {
@@ -461,8 +469,8 @@ sup {
   .home__figure {
     grid-column: 1;
     grid-row: auto;
-    width: 68%;
-    max-width: 22rem;
+    width: 84%;               /* left edge halfway between the old edge and the header's edge */
+    max-width: 24rem;
     margin: 0 auto;
   }
 }
@@ -556,6 +564,10 @@ sup {
     width: 78%;               /* same width as the text columns => left edge halfway between theirs */
     max-width: 26rem;
     margin: 0 auto;
+  }
+
+  .about__title {
+    font-size: 1.375rem;
   }
 
   .about__text {
