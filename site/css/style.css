@@ -352,6 +352,11 @@ sup {
 
 /* Two columns at every width: text on the left (English up top and left-aligned,
    Japanese lower down and right-aligned), photo on the right. */
+/* Wrapper around the two phrases: invisible on desktop, a tall block on phones */
+.home__text {
+  display: contents;
+}
+
 .home__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -416,12 +421,22 @@ sup {
     margin-top: var(--space-2xl);
   }
 
-  /* One column, like About: English shifted left, Japanese shifted right, photo below */
+  /* One column: English shifted left, Japanese shifted right, then the photo. The phrases
+     fill most of the first screen; only the top of the photo shows at the bottom. */
   .home__grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    row-gap: var(--space-2xl);
+    row-gap: 0;
     padding: 0;
+  }
+
+  .home__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2xl);
+    min-height: calc(100vh - 16rem);
+    min-height: calc(100svh - 16rem);
   }
 
   .home__title {
@@ -432,10 +447,11 @@ sup {
   }
 
   .home__title-jp {
-    width: min(29rem, 78%);
-    justify-self: end;
+    width: fit-content;       /* shrink to its longest line so its right edge sits at the padding */
+    max-width: min(29rem, 78%);
+    align-self: flex-end;
     margin-top: 0;
-    padding: 0 var(--space-s) 0 0;
+    padding: 0 var(--space-m) 0 0;
     font-size: 1.0625rem;
     line-height: 1.6;
     text-align: left;
@@ -443,7 +459,6 @@ sup {
   }
 
   .home__figure {
-    order: -1;               /* photo first on phones; it stays in the right column on desktop */
     grid-column: 1;
     grid-row: auto;
     width: 68%;
@@ -538,8 +553,8 @@ sup {
   }
 
   .photo {
-    width: 68%;
-    max-width: 22rem;
+    width: 78%;               /* same width as the text columns => left edge halfway between theirs */
+    max-width: 26rem;
     margin: 0 auto;
   }
 

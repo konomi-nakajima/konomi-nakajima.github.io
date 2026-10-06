@@ -69,7 +69,7 @@ I also checked that the visible text and image descriptions on every page are id
 
 ## Phone refinements, round 3
 
-- Home on phones: the photo comes first, then the English and Japanese phrases with 64px between each. On desktop the photo is still in the right column.
+- Home on phones: the English and Japanese phrases come first and fill most of the first screen (the block is the screen height minus 16rem, so about 100px of the photo shows at the bottom as a hint to scroll), then the photo. The English starts 48px from the left edge and the Japanese ends 48px from the right edge. On desktop the photo is still in the right column. About photos on phones are 78% wide, which puts their left edge halfway between the English and Japanese text edges.
 - About line spacing on phones is 1.4 for English and 1.6 for Japanese; Projects descriptions are 1.45. These are below the 1.5 that WCAG's strictest level (AAA) recommends, but meet the AA level, which only requires that readers can raise spacing to 1.5 themselves. If readability on small screens ever feels tight, raise them in `css/style.css`.
 - The Japanese case studies are left-aligned with the header again on phones (the 8px inset was removed).
 - The menu link for the page you're on is bold as well as having the thicker line (Inconsolata 400–700 is included in `fonts/`).

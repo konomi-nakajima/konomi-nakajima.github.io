@@ -619,8 +619,10 @@ def build():
     jp = inline(ix.find_all(lambda n: "text-block-20" in n.cls)[0].children)
     bodies["index"] = f'''  <main class="home">
     <div class="home__grid wrap">
-      <h1 class="home__title">{esc(tag_en)}</h1>
-      <p class="home__title-jp" lang="ja">{jp}</p>
+      <div class="home__text">
+        <h1 class="home__title">{esc(tag_en)}</h1>
+        <p class="home__title-jp" lang="ja">{jp}</p>
+      </div>
       <figure class="home__figure">
         {img_tag(hero, "home", "home__photo", width=381, loading="eager", sizes="(max-width: 767px) 50vw, 381px")}
         <figcaption class="home__caption">{esc(cap)}</figcaption>
