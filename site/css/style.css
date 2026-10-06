@@ -1,0 +1,1122 @@
+/* ==========================================================================
+   konomi.cc — static site stylesheet
+
+   Contents
+   1. Design tokens (colour, type scale, spacing scale)
+   2. Base
+   3. Header + navigation
+   4. Footer
+   5. Home
+   6. About
+   7. Projects
+   8. Case studies / articles
+   9. Image zoom (lightbox)
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Design tokens
+   ========================================================================== */
+:root {
+  /* Colour */
+  --rust: #862800;
+  --paper: #ebe5d6;
+  --text: #2b2b2b;
+  --light: #e2e2e2;
+  --muted: #5f5f5f;          /* 5:1 on --paper (the old #7e7e7e was 3.2:1) */
+  --highlight: #dbc4a5;
+  --red: #b80707;
+
+  /* Fonts */
+  --font-body: Arial, sans-serif;
+  --font-sans: Karla, sans-serif;
+  --font-mono: Inconsolata, monospace;
+  --font-jp-serif: "Kiwi Maru", sans-serif;
+  --font-jp: "Noto Sans JP", sans-serif;
+
+  /* Type scale (fluid: smallest value on phones, largest on wide screens) */
+  --text-xs: 0.8125rem;                                  /* 13px  captions, footnotes */
+  --text-s: 0.9375rem;                                   /* 15px  meta, notes, nav    */
+  --text-m: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);      /* 16–18 body                */
+  --text-l: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);  /* 19–22 section headings    */
+  --text-xl: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);       /* 24–32 page titles         */
+  --text-2xl: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);   /* 28–44 hero                */
+
+  --leading-tight: 1.3;
+  --leading-body: 1.6;
+
+  /* Spacing scale (use these, not one-off pixel values) */
+  --space-2xs: 0.25rem;  /*  4 */
+  --space-xs: 0.5rem;    /*  8 */
+  --space-s: 1rem;       /* 16 */
+  --space-m: 1.5rem;     /* 24 */
+  --space-l: 2rem;       /* 32 */
+  --space-xl: 3rem;      /* 48 */
+  --space-2xl: 4rem;     /* 64 */
+  --space-3xl: 6rem;     /* 96 */
+
+  /* Layout */
+  --page-pad: clamp(1.25rem, 5vw, 5rem);   /* side margins: 20px → 80px */
+  --wide: 940px;                           /* images, header, grids */
+  --measure: 38rem;                        /* reading column (~75 English / ~35 Japanese characters) */
+  --tap: 2.75rem;                          /* 44px minimum touch target */
+}
+
+/* Two page themes: dark (home, about, projects) and light (case studies) */
+.theme-dark {
+  --page-bg: var(--rust);
+  --ink: var(--light);
+  --nav-ink: var(--light);
+  --toggle-ink: #fff;
+  --footer-ink: var(--light);
+}
+
+.theme-light {
+  --page-bg: var(--paper);
+  --ink: var(--text);
+  --nav-ink: #000;
+  --toggle-ink: #000;
+  --footer-ink: #000;
+}
+
+/* ==========================================================================
+   2. Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--page-bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--text-m);
+  line-height: var(--leading-body);
+  -webkit-text-size-adjust: 100%;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 0;
+}
+
+a {
+  color: var(--muted);
+}
+
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: var(--leading-tight);
+}
+
+ul,
+ol {
+  margin: 0;
+  padding-left: 1.5em;
+}
+
+sup {
+  position: relative;
+  top: -0.5em;
+  font-size: 0.8em;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+/* Balanced headings; Japanese breaks at phrase boundaries where supported */
+.about__title,
+.article-title,
+.article-subtitle,
+.section-title,
+.ai-jp-title,
+.ai-jp-sub,
+.ai-en-title {
+  text-wrap: balance;
+  word-break: auto-phrase;
+}
+
+.wrap {
+  max-width: var(--wide);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* "Skip to content": invisible until a keyboard user tabs to it */
+.skip-link {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  z-index: 100;
+  padding: var(--space-xs) var(--space-s);
+  background: #fff;
+  color: #000;
+  font-family: var(--font-sans);
+  font-size: var(--text-s);
+  transform: translateY(-300%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* ==========================================================================
+   3. Header + navigation
+   ========================================================================== */
+.site-header {
+  position: relative;
+  margin: var(--space-2xl) var(--page-pad) 0;
+}
+
+.site-header__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: block;
+  color: var(--nav-ink);
+  text-decoration: none;
+}
+
+.brand__name {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  line-height: var(--leading-tight);
+}
+
+.brand__sep,
+.brand__jp {
+  font-family: var(--font-jp-serif);
+  font-size: 0.875em;
+  font-weight: 300;
+}
+
+.site-nav__list {
+  display: flex;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--space-s);
+  color: var(--nav-ink);
+  font-size: var(--text-s);
+  text-decoration: none;
+}
+
+.site-nav a:first-child {
+  font-family: var(--font-sans);
+}
+
+.site-nav a:last-child {
+  font-family: var(--font-mono);
+}
+
+.site-nav a > span {
+  padding-top: 0.2em;
+  border-top: 1px solid currentColor;     /* the original's overline */
+}
+
+.site-nav a[aria-current="page"] > span,
+.site-nav a:hover > span {
+  border-top-width: 2px;
+}
+
+/* Phones: only two links, so no menu is needed. Keep them in the header,
+   shifted so the text (not the padding) lines up with the page edge. */
+@media (max-width: 767px) {
+  .site-header__inner {
+    flex-wrap: wrap;
+  }
+
+  .site-nav {
+    margin-left: auto;
+    margin-right: calc(-1 * var(--space-s));
+  }
+
+  .site-nav a {
+    padding: 0 var(--space-s);
+  }
+}
+
+/* Smaller header on phones */
+@media (max-width: 767px) {
+  .site-header { margin-top: var(--space-m); }
+  .site-header__inner { align-items: baseline; }
+  .brand__name { font-size: 1.25rem; }
+}
+
+@media (max-width: 479px) {
+  .site-header { margin-top: var(--space-s); }
+  .brand__name { font-size: 1.125rem; }
+  .site-nav { margin-right: calc(-1 * var(--space-xs)); }
+  .site-nav a { padding: 0 var(--space-xs); }
+}
+
+/* ==========================================================================
+   4. Footer
+   ========================================================================== */
+.site-footer {
+  margin: var(--space-3xl) var(--page-pad) 0;
+  padding-bottom: var(--space-2xl);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-s);
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--space-s);
+  color: var(--footer-ink);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-links .sep {
+  color: var(--footer-ink);
+}
+
+@media (max-width: 767px) {
+  .site-footer {
+    margin-top: var(--space-2xl);
+    padding-bottom: var(--space-l);
+  }
+}
+
+/* ==========================================================================
+   5. Home
+   ========================================================================== */
+.home {
+  margin: var(--space-2xl) var(--page-pad) 0;
+}
+
+/* Two columns at every width: text on the left (English up top and left-aligned,
+   Japanese lower down and right-aligned), photo on the right. */
+.home__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 16rem;
+  column-gap: var(--space-m);
+  row-gap: var(--space-2xs);
+  padding: var(--space-s);
+}
+
+.home__title {
+  padding: 5.3rem var(--space-m) 0 var(--space-m);
+  color: var(--light);
+  font-family: var(--font-sans);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 1.875rem);   /* 24–30px */
+  font-weight: 200;
+  line-height: 1.2;
+}
+
+.home__title-jp {
+  align-self: start;
+  justify-self: end;
+  padding-right: var(--space-xs);
+  color: var(--light);
+  font-family: var(--font-jp-serif);
+  font-size: var(--text-l);
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.home__figure {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.home__photo {
+  width: 100%;
+  max-width: 23.75rem;     /* 380px */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.68);
+}
+
+/* Photo captions are deliberately quiet: small, thin and dimmed */
+.home__caption,
+.photo figcaption {
+  margin-top: var(--space-xs);
+  color: var(--light);
+  font-family: var(--font-sans);
+  font-size: 0.625rem;     /* 10px */
+  font-weight: 200;
+  opacity: 0.75;
+  text-align: center;
+  text-wrap: balance;
+}
+
+@media (max-width: 767px) {
+  .home {
+    margin-top: var(--space-l);
+  }
+
+  .home__grid {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: auto auto;
+    row-gap: var(--space-l);
+    padding: 0;
+  }
+
+  .home__title {
+    padding: var(--space-m) 0 0;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .home__title-jp {
+    margin-top: calc(-1 * var(--space-s));
+    padding-right: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    text-align: left;
+    text-wrap: balance;
+    word-break: auto-phrase;
+  }
+}
+
+/* ==========================================================================
+   6. About
+   ========================================================================== */
+.about {
+  margin: var(--space-2xl) var(--page-pad) 0;
+}
+
+.about__intro {
+  color: var(--light);
+}
+
+/* English sits to the left, Japanese is pushed to the right (stacked, on every screen size) */
+.about__col {
+  width: min(29rem, 78%);
+}
+
+.about__col--jp {
+  margin-top: var(--space-xl);
+  margin-left: auto;
+}
+
+.about__title {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: 400;
+}
+
+.about__text {
+  margin-top: var(--space-s);
+  font-family: var(--font-sans);
+  font-size: var(--text-m);
+}
+
+.about__col--jp .about__title {
+  font-family: var(--font-jp-serif);
+}
+
+.about__col--jp .about__text {
+  font-family: var(--font-jp-serif);
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.photos {
+  margin: var(--space-3xl) var(--page-pad) 0;
+}
+
+.photos__grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  column-gap: var(--space-m);
+  align-items: start;
+}
+
+.photo {
+  margin: 0;
+}
+
+.photo:nth-child(2) {
+  align-self: center;
+}
+
+.photo img {
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 800px) {
+  .about {
+    margin-top: var(--space-xl);
+  }
+
+  .about__col--jp {
+    margin-top: var(--space-2xl);
+  }
+
+  .photos {
+    margin-top: var(--space-2xl);
+  }
+
+  .photos__grid {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-l);
+  }
+
+  .photo {
+    max-width: 26rem;
+    margin: 0 auto;
+  }
+}
+
+/* ==========================================================================
+   7. Projects
+   ========================================================================== */
+.projects {
+  margin: var(--space-2xl) var(--page-pad) 0;
+}
+
+.project {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--space-m);
+  align-items: start;
+  padding-bottom: var(--space-xl);
+}
+
+.project img {
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.project__text {
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: var(--text-m);
+}
+
+.project__blurb {
+  margin-bottom: var(--space-xl);
+}
+
+.project__tags {
+  font-size: var(--text-s);
+  font-weight: 200;
+}
+
+.project__translation {
+  margin-top: var(--space-xs);
+  text-align: right;
+  font-family: var(--font-jp);
+  font-size: var(--text-s);
+  font-weight: 300;
+}
+
+.project__translation a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: #fff;
+  text-decoration: none;
+}
+
+.project__translation a:hover span {
+  text-decoration: underline;
+}
+
+.project__translation b {
+  margin-right: 0.35em;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .projects {
+    margin-top: var(--space-l);
+  }
+
+  .project {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-s);
+    padding-bottom: var(--space-xl);
+  }
+}
+
+/* ==========================================================================
+   8. Case studies / articles
+   ========================================================================== */
+.article {
+  margin: var(--space-xl) var(--page-pad) 0;
+}
+
+/* Images use the full width; text sits in a centred reading column. */
+.article .block {
+  max-width: var(--wide);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.article .block > :not(.zoom):not(.shot) {
+  max-width: var(--measure);     /* left-aligned with the header by default */
+}
+
+/* Column layout (Goodwill, Honda, AI process): everything on the page, title and
+   slides included, sits in one centred column; text is left-aligned inside it.
+   The column is 40 characters wide (40 × the body font size). */
+.article--column {
+  --measure: calc(40 * var(--text-m));
+}
+
+.article--column .block > * {
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.zoom {
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.article--full .zoom:has(.shot--cover) {
+  max-width: none;
+  margin-left: 0;
+}
+
+.zoom {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: var(--space-l) 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  font: inherit;
+}
+
+.zoom::after {
+  content: "";
+  position: absolute;
+  right: var(--space-xs);
+  bottom: var(--space-xs);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.62) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='5.5'/%3E%3Cpath d='M15 15l5 5M10.5 8v5M8 10.5h5'/%3E%3C/svg%3E") center / 60% no-repeat;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.zoom:hover::after,
+.zoom:focus-visible::after {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .zoom::after { opacity: 0.85; }
+}
+
+.shot {
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.article-title {
+  margin-top: var(--space-m);
+  font-family: var(--font-jp);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.article-subtitle {
+  margin-top: var(--space-xs);
+  font-family: var(--font-jp);
+  font-size: var(--text-l);
+  font-weight: 300;
+  line-height: var(--leading-tight);
+}
+
+/* PRODUCT / ROLE / TYPE / METHODS */
+.meta {
+  margin-top: var(--space-m);
+  margin-bottom: var(--space-m);
+  color: #4a4646;
+  font-family: var(--font-sans);
+  font-size: var(--text-s);
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.meta span {
+  font-weight: 400;
+}
+
+.section-title {
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-s);
+  font-family: var(--font-jp);
+  font-size: var(--text-l);
+  font-weight: 700;
+}
+
+.prose {
+  font-family: var(--font-jp);
+  font-size: var(--text-m);
+  line-height: var(--leading-body);
+}
+
+.prose p,
+.ai-en-body p {
+  text-wrap: pretty;
+  word-break: auto-phrase;
+}
+
+.prose p + p {
+  margin-top: 1em;
+}
+
+.prose strong {
+  font-weight: 700;
+}
+
+mark {
+  background-color: var(--highlight);
+  color: inherit;
+  font-weight: 700;
+}
+
+mark.heavy,
+mark strong {
+  font-weight: 900;
+}
+
+.asterisk {
+  color: var(--red);
+  font-weight: 900;
+}
+
+/* Lists */
+.list {
+  margin-top: var(--space-s);
+  margin-bottom: var(--space-s);
+  padding-left: 1.5em;
+  font-family: var(--font-jp);
+  font-size: var(--text-m);
+  line-height: var(--leading-body);
+}
+
+.list li + li {
+  margin-top: var(--space-2xs);
+}
+
+/* Footnote-style notes under a paragraph */
+.note {
+  margin-top: var(--space-m);
+  margin-bottom: var(--space-m);
+  padding-left: clamp(var(--space-s), 6vw, var(--space-xl));
+  padding-right: clamp(var(--space-s), 6vw, var(--space-xl));
+  color: var(--muted);
+  font-family: var(--font-jp);
+  font-size: var(--text-s);
+  line-height: 1.7;
+}
+
+.note--quote {
+  padding-left: var(--space-m);
+  padding-right: 0;
+  border-left: 2px solid rgba(95, 95, 95, 0.35);
+  color: #4a4440;
+  font-size: var(--text-m);
+}
+
+.note__label {
+  font-weight: 700;
+}
+
+.note .latin {
+  font-family: var(--font-sans);
+}
+
+/* Requirements box (Honda) */
+.requirements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--space-m);
+  margin-top: var(--space-m);
+  margin-bottom: var(--space-m);
+  padding: var(--space-s) var(--space-m);
+  border-radius: 10px;
+  background-color: #dadada;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-family: var(--font-jp);
+  font-size: var(--text-s);
+  line-height: 1.6;
+}
+
+.requirements__title {
+  margin-bottom: var(--space-xs);
+  font-size: var(--text-m);
+  font-weight: 700;
+}
+
+.requirements ul {
+  margin: 0;
+  padding-left: 1.25em;
+}
+
+.requirements li + li {
+  margin-top: var(--space-2xs);
+}
+
+/* Coda + afterword */
+.coda {
+  padding-top: var(--space-l);
+}
+
+.afterword {
+  margin-top: var(--space-3xl);
+  margin-bottom: var(--space-xl);
+  color: var(--muted);
+  font-family: var(--font-jp);
+  font-size: var(--text-s);
+  font-style: italic;
+  text-align: center;
+}
+
+.afterword a {
+  text-decoration-color: var(--muted);
+}
+
+/* Links between case studies */
+.project-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-m);
+  margin-top: var(--space-3xl);
+  font-family: var(--font-mono);
+  font-size: var(--text-s);
+}
+
+.project-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.project-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Medium page */
+.read-more {
+  margin-top: var(--space-xl);
+  font-family: var(--font-sans);
+  font-size: var(--text-l);
+  font-weight: 600;
+  text-align: center;
+}
+
+.read-more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  text-decoration: none;
+}
+
+.read-more a:hover {
+  text-decoration: underline;
+}
+
+/* AI process page */
+.ai-jp-title {
+  font-family: var(--font-jp);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+}
+
+.ai-jp-sub {
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-m);
+  font-family: var(--font-jp);
+  font-size: var(--text-l);
+  font-weight: 300;
+}
+
+.ai-jp-aside {
+  margin-top: var(--space-xl);
+  color: var(--muted);
+  font-family: var(--font-jp);
+  font-size: var(--text-s);
+  font-style: italic;
+}
+
+.ai-jp-aside a,
+.ai-en-aside a {
+  color: var(--muted);
+}
+
+.ai-en-title {
+  margin-top: var(--space-3xl);
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.ai-en-sub {
+  margin-top: var(--space-xs);
+  font-family: var(--font-sans);
+  font-size: var(--text-m);
+  font-weight: 300;
+}
+
+.ai-en-body {
+  margin-top: var(--space-m);
+  font-family: var(--font-sans);
+  font-size: var(--text-m);
+}
+
+.ai-en-body p + p {
+  margin-top: 1em;
+}
+
+.ai-en-body strong {
+  font-weight: 700;
+}
+
+.ai-en-aside {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-s);
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .requirements {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-s);
+  }
+}
+
+/* ==========================================================================
+   9. Image zoom (lightbox)
+   ========================================================================== */
+.lightbox {
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(24, 12, 6, 0.94);
+}
+
+.lightbox::backdrop {
+  background: rgba(24, 12, 6, 0.94);
+}
+
+.lightbox__scroll {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: var(--space-2xl) var(--space-s) var(--space-l);
+  cursor: zoom-out;
+}
+
+.lightbox__img {
+  width: min(96vw, 1600px);
+  max-width: none;
+  background: #fff;
+}
+
+.lightbox__close {
+  position: fixed;
+  top: var(--space-s);
+  right: var(--space-s);
+  z-index: 1;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Phones: show the slide larger than the screen so its text is readable; scroll to pan */
+@media (max-width: 700px) {
+  .lightbox__scroll {
+    place-items: start;
+  }
+
+  .lightbox__img {
+    width: 56rem;
+  }
+}
+
+/* ==========================================================================
+   10. Print (also used for "Save as PDF")
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  :root,
+  .theme-dark,
+  .theme-light {
+    --page-bg: #fff;
+    --ink: #000;
+    --light: #000;
+    --nav-ink: #000;
+    --footer-ink: #000;
+    --muted: #444;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Interactive-only parts */
+  .skip-link,
+  .site-nav,
+  .project-nav,
+  .lightbox,
+  .zoom::after {
+    display: none !important;
+  }
+
+  .site-header,
+  .home,
+  .about,
+  .photos,
+  .projects,
+  .article,
+  .site-footer {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .site-header { margin-top: 0; }
+  .site-footer { margin-top: var(--space-l); padding-bottom: 0; }
+
+  /* Shadows and dark-page colours make no sense on paper */
+  img,
+  .shot,
+  .zoom,
+  .project img,
+  .photo img,
+  .home__photo,
+  .requirements {
+    box-shadow: none !important;
+  }
+
+  .home__title,
+  .home__title-jp,
+  .home__caption,
+  .about__title,
+  .about__text,
+  .photo figcaption,
+  .project__text,
+  .project__translation a {
+    color: #000;
+    opacity: 1;
+  }
+
+  .home__title,
+  .project__tags {
+    font-weight: 400;
+  }
+
+  /* Keep highlights and the grey box when printing */
+  mark,
+  .requirements {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Don't split things awkwardly across pages */
+  img,
+  .zoom,
+  .project,
+  .photo,
+  .requirements,
+  .note {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  /* Show where external links go */
+  .footer-links a[href^="http"]::after,
+  .read-more a[href^="http"]::after,
+  .afterword a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+}
