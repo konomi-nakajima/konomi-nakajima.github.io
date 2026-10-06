@@ -67,6 +67,13 @@ I also checked that the visible text and image descriptions on every page are id
 - The "Next project" / "All projects" links at the bottom of the case studies were added and then removed again at your request.
 - Japanese headings break between phrases in every browser, including Safari: `tools/phrases.py` adds `<wbr>` marks (using Google's BudouX) and the `.jp-phrases` CSS rule honors them. On phones the case-study column sits 8px further in than the header. Home on phones has a smaller English phrase, more left padding and more space between the English, Japanese and photo. The header has 48px above it on phones.
 
+## Phone refinements, round 3
+
+- Home on phones: the photo comes first, then the English and Japanese phrases with 64px between each. On desktop the photo is still in the right column.
+- About line spacing on phones is 1.4 for English and 1.6 for Japanese; Projects descriptions are 1.45. These are below the 1.5 that WCAG's strictest level (AAA) recommends, but meet the AA level, which only requires that readers can raise spacing to 1.5 themselves. If readability on small screens ever feels tight, raise them in `css/style.css`.
+- The Japanese case studies are left-aligned with the header again on phones (the 8px inset was removed).
+- The menu link for the page you're on is bold as well as having the thicker line (Inconsolata 400–700 is included in `fonts/`).
+
 ## Search setup
 
 - `sitemap.xml` and `robots.txt` list the 8 pages and point search engines at the sitemap. Both assume the site lives at `https://konomi.cc` (no "www"); if the address ever changes, update them and the `canonical` line in each page's `<head>`.

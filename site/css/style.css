@@ -257,6 +257,11 @@ sup {
   border-top-width: 2px;
 }
 
+/* The page you are on: thicker line and bold text */
+.site-nav a[aria-current="page"] {
+  font-weight: 700;
+}
+
 /* Phones: only two links, so no menu is needed. Keep them in the header,
    shifted so the text (not the padding) lines up with the page edge. */
 @media (max-width: 767px) {
@@ -438,6 +443,7 @@ sup {
   }
 
   .home__figure {
+    order: -1;               /* photo first on phones; it stays in the right column on desktop */
     grid-column: 1;
     grid-row: auto;
     width: 68%;
@@ -538,11 +544,11 @@ sup {
   }
 
   .about__text {
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   .about__col--jp .about__text {
-    line-height: 1.7;
+    line-height: 1.6;
   }
 }
 
@@ -609,6 +615,10 @@ sup {
 @media (max-width: 767px) {
   .projects {
     margin-top: var(--space-l);
+  }
+
+  .project__text {
+    line-height: 1.45;
   }
 
   .project {
@@ -1031,12 +1041,6 @@ mark strong {
    Phone refinements for the case studies
    ========================================================================== */
 @media (max-width: 767px) {
-  /* The case-study column sits a little inside the header's edge */
-  .article--column {
-    margin-left: calc(var(--page-pad) + var(--space-xs));
-    margin-right: calc(var(--page-pad) + var(--space-xs));
-  }
-
   /* Japanese body text reads best with a little more line spacing on a small screen */
   html:lang(ja) .prose,
   html:lang(ja) .list {
