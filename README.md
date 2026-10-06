@@ -44,11 +44,16 @@ Page URLs are the same as on the old site, so existing links keep working.
 - **New project**: copy a page folder (e.g. `robot/`), edit it, then add a row to `projects/index.html` (copy an `<article class="project">`).
 - **New image**: put it in `images/<page>/`. Use `srcset` for large images, as the existing ones do.
 
-## Deploying
+## Hosting and updates
 
-Any static host works (Cloudflare Pages, Netlify, GitHub Pages with a custom domain, S3 + CDN). Publish the contents of `site/` at the **root** of the domain. Nothing has been deployed yet; the live site is still on Webflow. When you move the domain, also set up what Webflow did for you:
+The whole project lives in the public GitHub repository https://github.com/konomi-nakajima/konomi-nakajima.github.io.
+Every time a change is saved to the `main` branch there, a workflow (`.github/workflows/pages.yml`) publishes the
+contents of `site/` with GitHub Pages. Only `site/` becomes the website; `reference/`, `tools/` and the notes are in
+the repository but are not served as web pages.
 
-- HTTPS, and a redirect from `www.konomi.cc` to `konomi.cc` (the site's pages all name `konomi.cc`, without "www", as their official address).
-- Optionally a `404.html` for unknown URLs.
+- Temporary address (before the domain is connected): https://konomi-nakajima.github.io
+- Custom domain: `konomi.cc` (DNS at Namecheap; domain registration expires 2026-12-24, so keep it renewed).
+- To update the site: change files under `site/`, commit, and push to `main`. It goes live in about a minute.
+- The repository's saved versions use the address `338424690+konomi-nakajima@users.noreply.github.com`, which keeps a real email private.
 
 Fonts (Karla, Kiwi Maru, Inconsolata, Noto Sans JP) are included in `site/fonts/`, so the site makes no requests to Google. Images are WebP (the `reference/` folder keeps the originals). Link previews use `images/og-image.jpg` (1200×630).
