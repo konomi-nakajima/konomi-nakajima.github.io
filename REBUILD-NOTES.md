@@ -79,6 +79,12 @@ I also checked that the visible text and image descriptions on every page are id
 - Header on phones: the name is 22px (20px on 360–379px screens, 18px below that, so it never crowds the menu) and the gap around the ・ is tighter. About's page titles are 22px, the same size as the name.
 - Home on phones: the space above the English phrase equals the space below the Japanese phrase (164px in a 390×750 window), and the photo is 84% wide, so its left edge is halfway between its previous edge and the header's.
 
+## Phone refinements, round 5
+
+- Header: the name and the menu (line plus text) are centered on each other; measured from the rendered pixels, the menu was 1px high, so it is nudged down 1px (difference now 0.0px).
+- Home: two English lines of extra space between the English and Japanese phrases; the space above the English still equals the space below the Japanese, and the photo starts at the same position.
+- About: the English has 24px of extra left padding (text starts 48px from the edge) and the Japanese 24px of right padding (its lines end about 48–53px from the right edge, depending on where each line breaks). The photos are unchanged at 78% wide, so their left edge is no longer exactly halfway between the two text edges.
+
 ## Search setup
 
 - `sitemap.xml` and `robots.txt` list the 8 pages and point search engines at the sitemap. Both assume the site lives at `https://konomi.cc` (no "www"); if the address ever changes, update them and the `canonical` line in each page's `<head>`.
